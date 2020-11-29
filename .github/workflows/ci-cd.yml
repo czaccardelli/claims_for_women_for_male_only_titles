@@ -33,7 +33,7 @@ jobs:
           name: ${{ github.actor}}-${{ github.run_number }}
           path: ./temp
       - name: Zip Downloaded Files (Again)
-        run: zip -r ${{ github.actor}}-${{ github.run_number }}.zip ./temp/
+        run: zip -r ${{ github.actor}}-${{ github.run_number }}.zip
       - name: Create Release
         if: success()
         id: create_release
@@ -45,7 +45,7 @@ jobs:
           release_name: Release ${{ github.run_number }}
           body: |
             Changes in this Release
-            - Adjusted alliance costs to scale with allies' maximum military strength
+            - Added claims for female children in Male Only realms and for Male Only titles
           draft: true
           prerelease: true
       - name: Upload Release Asset
