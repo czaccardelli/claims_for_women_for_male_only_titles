@@ -1,0 +1,5 @@
+﻿on_death = {
+    events = {
+        claims_to_females.0001
+    }
+}

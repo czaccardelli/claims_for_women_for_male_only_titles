@@ -1,0 +1,45 @@
+﻿namespace = claims_to_females
+
+claims_to_females.0001 = {
+    scope = character
+    hidden = yes
+
+    trigger = {
+        is_ruler = yes
+        is_landed = yes
+        any_child = {
+            is_female = yes
+        }
+        OR = {
+            has_realm_law = male_only_law
+            any_held_title = {
+                has_title_law = male_only_law
+            }
+        }
+    }
+
+    immediate = {
+        debug_log = "blahblahfired"
+        every_held_title = {
+            every_player = { send_interface_message = {
+                type = event_heretic_stronghold_bad
+                title = HERETIC_STRONGHOLD_SPAWNED
+                desc = HERETIC_STRONGHOLD_SPAWNED_DESC
+                show_as_tooltip = {
+                    prev = { set_county_faith = scope:heresy }
+                }
+            } }
+            every_child = {
+                limit = {
+                    is_female = yes
+                    NOT = { has_trait = disinherited }
+                    NOT = { has_trait = bastard }
+                }
+                # first remove claims to the titles that were gained from succession hard code, in case they already hold them as unpressed, etc...
+                remove_claim = prev
+                # ...then re-add them as pressed claims
+                add_pressed_claim = prev
+            }
+        }
+    }
+}
