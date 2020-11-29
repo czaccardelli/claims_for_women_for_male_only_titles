@@ -12,6 +12,7 @@ claims_to_females.0001 = {
         }
         OR = {
             has_realm_law = male_only_law
+            # not necessary as of 1.2.1 since titles with male_only_law can still be inherited by females, but we'll future-proof it
             any_held_title = {
                 has_title_law = male_only_law
             }
@@ -19,16 +20,12 @@ claims_to_females.0001 = {
     }
 
     immediate = {
-        debug_log = "blahblahfired"
         every_held_title = {
-            every_player = { send_interface_message = {
-                type = event_heretic_stronghold_bad
-                title = HERETIC_STRONGHOLD_SPAWNED
-                desc = HERETIC_STRONGHOLD_SPAWNED_DESC
-                show_as_tooltip = {
-                    prev = { set_county_faith = scope:heresy }
-                }
-            } }
+            limit = {
+                # not technically necessary since claims don't exist for baronies, but let's be neat and avoid possible weirdness
+                tier >= tier_county
+            }
+            save_scope_as = title_to_inherit
             holder = {
                 every_child = {
                     limit = {
@@ -37,9 +34,9 @@ claims_to_females.0001 = {
                         NOT = { has_trait = bastard }
                     }
                     # first remove claims to the titles that were gained from succession hard code, in case they already hold them as unpressed, etc...
-                    remove_claim = prev
+                    remove_claim = scope:title_to_inherit
                     # ...then re-add them as pressed claims
-                    add_pressed_claim = prev
+                    add_pressed_claim = scope:title_to_inherit
                 }
             }
         }
